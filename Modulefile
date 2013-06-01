@@ -1,11 +1,11 @@
 name    'puppet-resqueweb'
-version '0.0.1'
+version '0.1.0'
 source 'UNKNOWN'
-author 'puppet'
-license 'Apache License, Version 2.0'
-summary 'UNKNOWN'
-description 'UNKNOWN'
-project_page 'UNKNOWN'
+author 'Rhommel Lamas'
+license 'MIT License'
+summary 'Puppet module to setup resqueweb'
+description 'Helps install resqueweb with unicorn and multi environments'
+project_page 'https://github.com/rhoml/puppet-resqueweb'
 
-## Add dependencies, if any:
-# dependency 'username/name', '>= 1.2.0'
+## Add dependencies, if any
+# dependency 'alup/rbenv', '>= 1.2.0'
