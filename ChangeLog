@@ -1,0 +1,4 @@
+2013-12-05  Rhommel Lamas  <roml@rhommell.com>
+    * puppet-resqueweb: version 0.1.0 release.
+    *  Adds support for multiple environments.
+    *  Adds support for multiple namespaces depending on environments.

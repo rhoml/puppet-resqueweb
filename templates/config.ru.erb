@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require 'logger'
+
+module Rack
+  class GlobalResque
+    STAGES    = %w{<%= stages %>}
+    COUNTRIES = %w{<%= countries %>}
+    APPS      = %w{<%= apps %>}
+
+    def initialize
+      @app = Resque::Server.new
+    end
+
+    def call(env)
+      path        = env["PATH_INFO"]
+      script_name = env['SCRIPT_NAME']
+      sName       = env['SERVER_NAME']
+
+      server_match = /^(#{STAGES.join('|')})-queues/
+      path_match   = /^\/+(#{COUNTRIES.join('|')})\/(#{APPS.join('|')})(.*)/
+
+      stage = server_match.match(sName.to_s).to_a.last
+      m, country, app_name, rest = path_match.match(path.to_s).to_a
+
+      if stage && country
+        Resque.redis.namespace = "#{country}:#{stage}:#{app_name}"
+
+        location           = "/#{country}/#{app_name}"
+        env['SCRIPT_NAME'] = (script_name + location)
+        env['PATH_INFO']   = rest
+        @app.call(env)
+      else
+        [404, {"Content-Type" => "text/plain", "X-Cascade" => "pass"}, ["Not Found: #{path}"]]
+      end
+    ensure
+      env['PATH_INFO']   = path
+      env['SCRIPT_NAME'] = script_name
+    end
+  end
+end
+
+$LOAD_PATH.unshift ::File.expand_path(::File.dirname(__FILE__) + '/lib')
+require 'resque/server'
+
+Resque.redis = '<%= redis_host %>:<%= redis_port %>'
+
+use Rack::ShowExceptions
+run Rack::GlobalResque.new
