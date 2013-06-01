@@ -69,8 +69,8 @@ resqueweb::resource::init {
 ```
 ## Authors
 
- Rhommel Lamas <http://github.com/rhoml>
- Toni Reina <http://github.com/areina>
+* Rhommel Lamas <http://github.com/rhoml>
+* Toni Reina <http://github.com/areina>
 
 ## TODO
 
